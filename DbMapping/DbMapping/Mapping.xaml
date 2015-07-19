@@ -4,10 +4,15 @@
         Title="Mapping" Height="382.09" Width="531.343">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
+        <UniformGrid Grid.Row="0" >
+            <Label Content="策略名称" />
+            <Label Content="每次导入最大个数" />
+        </UniformGrid>
+        <StackPanel Grid.Row="1">
             <UniformGrid Columns="2">
                 <GroupBox Header="源" >
                     <Grid>
@@ -87,6 +92,6 @@
                 </StackPanel>
             </GroupBox>
         </StackPanel>
-        <Button Grid.Row="1" Content="保存" Command="{Binding SaveCommand}"   CommandParameter="{Binding SourceIndendityFieldName}"/>
+        <Button Grid.Row="2" Content="保存" Command="{Binding SaveCommand}"   CommandParameter="{Binding SourceIndendityFieldName}"/>
     </Grid>
 </Window>

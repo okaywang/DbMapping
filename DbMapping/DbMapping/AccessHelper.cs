@@ -54,7 +54,7 @@ namespace DbMapping
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
                         entity.TargetTableName = reader["TargetTableName"].ToString();
-                        entity.SourceFields = reader["SourceFields"].ToString();
+                        entity.SourceFields = reader["SourceFields"].ToString(); 
                         entity.TargetFields = reader["TargetFields"].ToString();
                         entities.Add(entity);
                     }

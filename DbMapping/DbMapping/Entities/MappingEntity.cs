@@ -10,6 +10,8 @@ namespace DbMapping.Entities
     {
         public int ID { get; set; }
 
+        public string MappingName { get; set; }
+
         public string SourceFileName { get; set; }
 
         public string SourceTableName { get; set; }
@@ -23,5 +25,9 @@ namespace DbMapping.Entities
         public string SourceFields { get; set; }
 
         public string TargetFields { get; set; }
+
+        public long ImportedMaxIndendity { get; set; }
+
+        public int ImportingMaxCount { get; set; }
     }
 }
