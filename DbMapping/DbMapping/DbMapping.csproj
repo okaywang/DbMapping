@@ -53,8 +53,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Entities\MappingEntity.cs" />
     <Compile Include="Mapping.xaml.cs">
       <DependentUpon>Mapping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MappingList.xaml.cs">
+      <DependentUpon>MappingList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Target.xaml.cs">
       <DependentUpon>Target.xaml</DependentUpon>
@@ -73,6 +77,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Mapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MappingList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

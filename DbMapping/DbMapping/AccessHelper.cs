@@ -27,6 +27,13 @@ namespace DbMapping
             }
             return tables.ToArray();
         }
+
+        public static T[] GetList<T>(string sql, string accessFileName) where T : class
+        {
+            
+
+            return null;
+        }
     }
 
     public class TableSchema
