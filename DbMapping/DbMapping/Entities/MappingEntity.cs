@@ -8,6 +8,8 @@ namespace DbMapping.Entities
 {
     public class MappingEntity
     {
+        public int ID { get; set; }
+
         public string SourceFileName { get; set; }
 
         public string SourceTableName { get; set; }
@@ -18,6 +20,8 @@ namespace DbMapping.Entities
 
         public string TargetTableName { get; set; }
 
-        public string Fields { get; set; }
+        public string SourceFields { get; set; }
+
+        public string TargetFields { get; set; }
     }
 }

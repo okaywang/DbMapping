@@ -26,14 +26,15 @@ namespace DbMapping
             InitializeComponent();
 
             var vm = new MappingViewModel();
-            vm.SourceFileName = "c:\\aaaa.txt";
-            vm.SourceTableName = "abc";
-            vm.SourceIndendityFieldName = "the Id";
-            vm.TargetDbName = "tar db";
-            vm.TargetTableName = "tar table";
+            vm.SourceFileName = "c:\\text.mdb";
+            vm.SourceTableName = "table1";
+            vm.SourceIndendityFieldName = "ID";
+            vm.TargetDbName = "Database1";
+            vm.TargetTableName = "tableA";
             vm.MappingEntries = new ObservableCollection<MappingEntry>();
-            vm.MappingEntries.Add(new MappingEntry { SourceField = "a1", TargetField = "b1" });
-            vm.MappingEntries.Add(new MappingEntry { SourceField = "a2", TargetField = "b2" });
+            vm.MappingEntries.Add(new MappingEntry { SourceField = "A1", TargetField = "A2" });
+            vm.MappingEntries.Add(new MappingEntry { SourceField = "B1", TargetField = "B2" });
+            vm.MappingEntries.Add(new MappingEntry { SourceField = "C1", TargetField = "C2" });
             this.DataContext = vm;
         }
 
@@ -114,10 +115,12 @@ namespace DbMapping
         {
             var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Mapping.accdb";
 
-            var fields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.Format("{0}>{1}", string.IsNullOrEmpty(x) ? y.SourceField : x + "," + y.SourceField, y.TargetField));
-            var sql = string.Format(@"insert into Mapping(SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,Fields)
-                            values('{0}','{1}','{2}','{3}','{4}','{5}')",
-                        this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, fields);
+            var sourceFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.SourceField : x + "," + y.SourceField);
+            var targetFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.TargetField : x + "," + y.TargetField);
+
+            var sql = string.Format(@"insert into Mapping(SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
+                            values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                        this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
             using (var cnn = new OleDbConnection(connectionString))
             {
                 using (var cmd = new OleDbCommand(sql, cnn))

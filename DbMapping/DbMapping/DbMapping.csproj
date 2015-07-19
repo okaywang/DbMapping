@@ -54,6 +54,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Entities\MappingEntity.cs" />
+    <Compile Include="Importing.xaml.cs">
+      <DependentUpon>Importing.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mapping.xaml.cs">
       <DependentUpon>Mapping.xaml</DependentUpon>
     </Compile>
@@ -63,6 +66,10 @@
     <Compile Include="Target.xaml.cs">
       <DependentUpon>Target.xaml</DependentUpon>
     </Compile>
+    <Page Include="Importing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

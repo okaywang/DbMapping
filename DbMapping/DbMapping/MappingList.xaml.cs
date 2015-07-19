@@ -28,27 +28,7 @@ namespace DbMapping
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Mapping.accdb";
-
-            var sql = "select * from Mapping";
-            var entities = new List<MappingEntity>();
-            using (var cnn = new OleDbConnection(connectionString))
-            {
-                cnn.Open();
-                using (var cmm = new OleDbCommand(sql, cnn))
-                {
-                    var reader = cmm.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        var entity = new MappingEntity();
-                        entity.SourceTableName = reader["SourceTableName"].ToString();
-                        entity.TargetTableName = reader["TargetTableName"].ToString();
-                        entities.Add(entity);
-                    }
-                }
-            }
-
-            this.DataContext = entities;
+            this.DataContext = AccessHelper.GetMappings();
         }
     }
 }
