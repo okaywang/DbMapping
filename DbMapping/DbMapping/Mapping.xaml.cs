@@ -50,6 +50,8 @@ namespace DbMapping
 
     public class MappingViewModel : DependencyObject
     {
+        public static readonly DependencyProperty MappingNameProperty = DependencyProperty.Register("MappingName", typeof(string), typeof(Mapping));
+        public static readonly DependencyProperty ImportingMaxCountProperty = DependencyProperty.Register("ImportingMaxCount", typeof(string), typeof(Mapping));
         public static readonly DependencyProperty SourceFileNameProperty = DependencyProperty.Register("SourceFileName", typeof(string), typeof(Mapping));
         public static readonly DependencyProperty SourceTableNameProperty = DependencyProperty.Register("SourceTableName", typeof(string), typeof(Mapping));
         public static readonly DependencyProperty SourceIndendityFieldNameProperty = DependencyProperty.Register("SourceIndendityFieldName", typeof(string), typeof(Mapping));
@@ -58,6 +60,19 @@ namespace DbMapping
         public static readonly DependencyProperty TargetTableNameProperty = DependencyProperty.Register("TargetTableName", typeof(string), typeof(Mapping));
 
         //public static readonly DependencyProperty MappingEntriesProperty = DependencyProperty.Register("MappingEntries", typeof(string), typeof(Mapping));
+
+        public string MappingName
+        {
+            get { return this.GetValue(MappingNameProperty) as string; }
+            set { this.SetValue(MappingNameProperty, value); }
+        }
+
+        public string ImportingMaxCount
+        {
+            get { return this.GetValue(ImportingMaxCountProperty) as string; }
+            set { this.SetValue(ImportingMaxCountProperty, value); }
+        }
+
         public string SourceFileName
         {
             get { return this.GetValue(SourceFileNameProperty) as string; }
@@ -118,9 +133,9 @@ namespace DbMapping
             var sourceFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.SourceField : x + "," + y.SourceField);
             var targetFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.TargetField : x + "," + y.TargetField);
 
-            var sql = string.Format(@"insert into Mapping(SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
-                            values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                        this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
+            var sql = string.Format(@"insert into Mapping(MappingName,ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
+                            values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
+                       this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
             using (var cnn = new OleDbConnection(connectionString))
             {
                 using (var cmd = new OleDbCommand(sql, cnn))

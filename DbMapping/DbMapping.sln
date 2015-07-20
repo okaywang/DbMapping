@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{5A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{66240DF7-B533-4B54-89D7-7E00A568ACFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMapping", "DataMapping\DataMapping.csproj", "{CF3CAFE8-0097-44F5-9A78-7230D915385C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{27B0FC5B-0B50-4A23-B21F-B67C3BC285AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27B0FC5B-0B50-4A23-B21F-B67C3BC285AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27B0FC5B-0B50-4A23-B21F-B67C3BC285AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3CAFE8-0097-44F5-9A78-7230D915385C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3CAFE8-0097-44F5-9A78-7230D915385C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3CAFE8-0097-44F5-9A78-7230D915385C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3CAFE8-0097-44F5-9A78-7230D915385C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
