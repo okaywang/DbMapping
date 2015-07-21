@@ -20,6 +20,7 @@ namespace DbMapping
     /// </summary>
     public partial class Importing : Window
     {
+        private int _maxId = 0;
         public Importing()
         {
             InitializeComponent();
@@ -27,6 +28,16 @@ namespace DbMapping
             var vm = new ImportingViewModel();
             vm.Mappings = AccessHelper.GetMappings();
             this.DataContext = vm;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new Mapping().ShowDialog();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            new MappingList().ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,11 +57,25 @@ namespace DbMapping
                     DisplayMemberBinding = new Binding(fields[i])
                 });
             }
-            
+
             this.ListView1.View = gridView;
 
-            var data = AccessHelper.GetDataTable(sql,entity.SourceFileName);
+            var data = AccessHelper.GetDataTable(sql, entity.SourceFileName);
+            _maxId = 0;
+            if (data.Rows.Count > 0)
+            {
+                _maxId = Convert.ToInt32(data.Rows[data.Rows.Count - 1][entity.SourceIndendityFieldName]);
+            }
             this.ListView1.ItemsSource = data.DefaultView;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var entity = this.ComboBox1.SelectedValue as MappingEntity;
+            var sql = string.Format("update Mapping set ImportedMaxIndendity={0} where ID={1}", _maxId, entity.ID);
+            AccessHelper.ExecuteSql(sql, "../../Data/Mapping.accdb");
+
+            MessageBox.Show("导入成功");
         }
     }
 

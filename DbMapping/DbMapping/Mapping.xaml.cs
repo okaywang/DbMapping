@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.OleDb;
@@ -26,15 +27,15 @@ namespace DbMapping
             InitializeComponent();
 
             var vm = new MappingViewModel();
-            vm.SourceFileName = "c:\\text.mdb";
-            vm.SourceTableName = "table1";
+            //vm.SourceFileName = "c:\\text.mdb";
+            //vm.SourceTableName = "table1";
             vm.SourceIndendityFieldName = "ID";
-            vm.TargetDbName = "Database1";
-            vm.TargetTableName = "tableA";
+            //vm.TargetDbName = "Database1";
+            //vm.TargetTableName = "tableA";
             vm.MappingEntries = new ObservableCollection<MappingEntry>();
-            vm.MappingEntries.Add(new MappingEntry { SourceField = "A1", TargetField = "A2" });
-            vm.MappingEntries.Add(new MappingEntry { SourceField = "B1", TargetField = "B2" });
-            vm.MappingEntries.Add(new MappingEntry { SourceField = "C1", TargetField = "C2" });
+            //vm.MappingEntries.Add(new MappingEntry { SourceField = "A1", TargetField = "A2" });
+            //vm.MappingEntries.Add(new MappingEntry { SourceField = "B1", TargetField = "B2" });
+            //vm.MappingEntries.Add(new MappingEntry { SourceField = "C1", TargetField = "C2" });
             this.DataContext = vm;
         }
 
@@ -45,6 +46,17 @@ namespace DbMapping
 
             this.SourceField.Clear();
             this.TargetField.Clear();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //var dialog = new OpenFileDialog();
+            //if (dialog.ShowDialog() == true)
+            //{
+            //    var vm = this.DataContext as MappingViewModel;
+            //    vm.SourceFileName = dialog.FileName;
+            //    this.tbkSourceFileName.Text = dialog.FileName;
+            //}
         }
     }
 
@@ -144,6 +156,8 @@ namespace DbMapping
                     cmd.ExecuteNonQuery();
                 }
             }
+
+            MessageBox.Show("保存成功！");
         }
     }
 

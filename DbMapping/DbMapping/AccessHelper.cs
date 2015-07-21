@@ -52,6 +52,7 @@ namespace DbMapping
                         var entity = new MappingEntity();
                         entity.ID = (int)reader["ID"];
                         entity.MappingName = reader["MappingName"].ToString();
+                        entity.SourceIndendityFieldName = reader["SourceIndendityFieldName"].ToString();
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
                         entity.TargetTableName = reader["TargetTableName"].ToString();
@@ -76,6 +77,21 @@ namespace DbMapping
                 var ds = new DataSet();
                 adapter.Fill(ds);
                 return ds.Tables[0];
+            }
+        }
+
+        public static  void ExecuteSql(string sql, string fileName)
+        {
+            var connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}", fileName);
+
+            var entities = new List<MappingEntity>();
+            using (var cnn = new OleDbConnection(connectionString))
+            {
+                cnn.Open();
+                using (var cmm = new OleDbCommand(sql,cnn))
+                {
+                    cmm.ExecuteNonQuery();
+                }
             }
         }
     }

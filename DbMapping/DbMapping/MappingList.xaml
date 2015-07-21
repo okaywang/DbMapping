@@ -11,7 +11,7 @@
         <ListView ItemsSource="{Binding}" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding SourceTableName}" Header="策略名称" Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding MappingName}" Header="策略名称" Width="100" />
                     <GridViewColumn DisplayMemberBinding="{Binding SourceTableName}" Header="源表"  Width="100" />
                     <GridViewColumn  Width="100" >
                         <GridViewColumn.CellTemplate>

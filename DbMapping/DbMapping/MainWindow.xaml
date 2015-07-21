@@ -27,5 +27,6 @@
             <MenuItem Header="_View">
             </MenuItem>
         </Menu>
+        
     </Grid>
 </Window>
