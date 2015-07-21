@@ -10,7 +10,7 @@
         <Menu >
             <MenuItem Header="导出策略">
                 <MenuItem Header="新建策略" Click="MenuItem_Click" />
-                <MenuItem Header="策略列表" />
+                <MenuItem Header="策略列表" Click="MenuItem_Click_1"  />
             </MenuItem>
             <MenuItem Header="_File">
                 <MenuItem Header="_New..." />

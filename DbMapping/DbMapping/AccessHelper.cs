@@ -38,7 +38,7 @@ namespace DbMapping
 
         public static MappingEntity[] GetMappings()
         {
-            var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Mapping.accdb";
+            var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=../../Data/Mapping.accdb";
             var sql = "select * from Mapping";
             var entities = new List<MappingEntity>();
             using (var cnn = new OleDbConnection(connectionString))
@@ -51,11 +51,13 @@ namespace DbMapping
                     {
                         var entity = new MappingEntity();
                         entity.ID = (int)reader["ID"];
+                        entity.MappingName = reader["MappingName"].ToString();
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
                         entity.TargetTableName = reader["TargetTableName"].ToString();
                         entity.SourceFields = reader["SourceFields"].ToString(); 
                         entity.TargetFields = reader["TargetFields"].ToString();
+                        entity.ImportedMaxIndendity = (int)reader["ImportedMaxIndendity"];
                         entities.Add(entity);
                     }
                 }

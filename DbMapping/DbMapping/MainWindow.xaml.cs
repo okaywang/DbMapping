@@ -28,5 +28,10 @@ namespace DbMapping
         {
             new Mapping().ShowDialog();
         }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            new MappingList().ShowDialog();
+        }
     }
 }

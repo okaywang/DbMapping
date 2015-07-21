@@ -26,7 +26,7 @@ namespace DbMapping.Entities
 
         public string TargetFields { get; set; }
 
-        public long ImportedMaxIndendity { get; set; }
+        public int ImportedMaxIndendity { get; set; }
 
         public int ImportingMaxCount { get; set; }
     }
