@@ -30,5 +30,28 @@ namespace DbMapping
         {
             this.DataContext = AccessHelper.GetMappings();
         }
+
+        protected void HandleDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var entity = ((ListViewItem)sender).Content as MappingEntity;
+            var vm = new MappingViewModel
+            {
+                MappingName = entity.MappingName,
+                SourceFileName = entity.SourceFileName,
+                SourceTableName = entity.SourceTableName,
+                SourceIndendityFieldName = entity.SourceIndendityFieldName,
+                TargetDbName = entity.TargetDbName,
+                TargetTableName = entity.TargetTableName,
+                ImportingMaxCount = entity.ImportingMaxCount,
+            };
+            var srcFields = entity.SourceFields.Split(',');
+            var tgtFields = entity.TargetFields.Split(',');
+            for (int i = 0; i < srcFields.Length; i++)
+            {
+                vm.MappingEntries.Add(new MappingEntry { SourceField = srcFields[i], TargetField = tgtFields[i] });
+            }            
+            var view = new Mapping(vm);
+            view.ShowDialog();
+        }
     }
 }

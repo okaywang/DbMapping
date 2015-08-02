@@ -6,20 +6,16 @@
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
+        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick" />
+        </Style>
     </Window.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding}" >
+        <ListView ItemsSource="{Binding}" ItemContainerStyle="{StaticResource itemstyle}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding MappingName}" Header="策略名称" Width="100" />
                     <GridViewColumn DisplayMemberBinding="{Binding SourceTableName}" Header="源表"  Width="100" />
-                    <GridViewColumn  Width="100" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="-->" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding TargetTableName}" Header="目标表"  Width="100" />
                     <GridViewColumn DisplayMemberBinding="{Binding ImportedMaxIndendity}" Header="导入标识值"  Width="100" />
                 </GridView>

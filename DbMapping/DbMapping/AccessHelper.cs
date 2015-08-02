@@ -38,10 +38,9 @@ namespace DbMapping
 
         public static MappingEntity[] GetMappings()
         {
-            var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=../../Data/Mapping.accdb";
             var sql = "select * from Mapping";
             var entities = new List<MappingEntity>();
-            using (var cnn = new OleDbConnection(connectionString))
+            using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
             {
                 cnn.Open();
                 using (var cmm = new OleDbCommand(sql, cnn))
@@ -52,11 +51,13 @@ namespace DbMapping
                         var entity = new MappingEntity();
                         entity.ID = (int)reader["ID"];
                         entity.MappingName = reader["MappingName"].ToString();
+                        entity.ImportingMaxCount = (int)reader["ImportingMaxCount"];
                         entity.SourceIndendityFieldName = reader["SourceIndendityFieldName"].ToString();
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
+                        entity.TargetDbName = reader["TargetDbName"].ToString();
                         entity.TargetTableName = reader["TargetTableName"].ToString();
-                        entity.SourceFields = reader["SourceFields"].ToString(); 
+                        entity.SourceFields = reader["SourceFields"].ToString();
                         entity.TargetFields = reader["TargetFields"].ToString();
                         entity.ImportedMaxIndendity = (int)reader["ImportedMaxIndendity"];
                         entities.Add(entity);
@@ -65,7 +66,35 @@ namespace DbMapping
             }
             return entities.ToArray();
         }
+        public static MappingEntity GetMapping(int id)
+        { 
+            var sql = string.Format("select * from Mapping where ID={0}", id);
 
+            using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
+            {
+                cnn.Open();
+                using (var cmm = new OleDbCommand(sql, cnn))
+                {
+                    var reader = cmm.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var entity = new MappingEntity();
+                        entity.ID = (int)reader["ID"];
+                        entity.MappingName = reader["MappingName"].ToString();
+                        entity.ImportingMaxCount = (int)reader["ImportingMaxCount"];
+                        entity.SourceIndendityFieldName = reader["SourceIndendityFieldName"].ToString();
+                        entity.SourceFileName = reader["SourceFileName"].ToString();
+                        entity.SourceTableName = reader["SourceTableName"].ToString();
+                        entity.TargetTableName = reader["TargetTableName"].ToString();
+                        entity.SourceFields = reader["SourceFields"].ToString();
+                        entity.TargetFields = reader["TargetFields"].ToString();
+                        entity.ImportedMaxIndendity = (int)reader["ImportedMaxIndendity"];
+                        return entity;
+                    }
+                }
+            }
+            return null;
+        }
         public static DataTable GetDataTable(string sql, string fileName)
         {
             var connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}", fileName);
@@ -80,7 +109,7 @@ namespace DbMapping
             }
         }
 
-        public static  void ExecuteSql(string sql, string fileName)
+        public static void ExecuteSql(string sql, string fileName)
         {
             var connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}", fileName);
 
@@ -88,7 +117,7 @@ namespace DbMapping
             using (var cnn = new OleDbConnection(connectionString))
             {
                 cnn.Open();
-                using (var cmm = new OleDbCommand(sql,cnn))
+                using (var cmm = new OleDbCommand(sql, cnn))
                 {
                     cmm.ExecuteNonQuery();
                 }

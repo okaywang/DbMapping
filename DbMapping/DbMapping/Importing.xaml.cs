@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DbMapping.Entities;
+using System.Data;
 
 namespace DbMapping
 {
@@ -45,7 +46,8 @@ namespace DbMapping
             var vm = this.DataContext as ImportingViewModel;
             var entity = this.ComboBox1.SelectedValue as MappingEntity;
 
-            var sql = string.Format("select {0} from {1}", entity.SourceFields, entity.SourceTableName);
+            var record = AccessHelper.GetMapping(entity.ID);
+            var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", entity.ImportingMaxCount, entity.SourceFields, entity.SourceTableName, entity.SourceIndendityFieldName, record.ImportedMaxIndendity);
 
             var gridView = new GridView();
             var fields = entity.SourceFields.Split(',');
@@ -61,7 +63,7 @@ namespace DbMapping
             this.ListView1.View = gridView;
 
             var data = AccessHelper.GetDataTable(sql, entity.SourceFileName);
-            _maxId = 0;
+
             if (data.Rows.Count > 0)
             {
                 _maxId = Convert.ToInt32(data.Rows[data.Rows.Count - 1][entity.SourceIndendityFieldName]);
@@ -73,9 +75,10 @@ namespace DbMapping
         {
             var entity = this.ComboBox1.SelectedValue as MappingEntity;
             var sql = string.Format("update Mapping set ImportedMaxIndendity={0} where ID={1}", _maxId, entity.ID);
-            AccessHelper.ExecuteSql(sql, "../../Data/Mapping.accdb");
+            AccessHelper.ExecuteSql(sql, "Data/Mapping.accdb");
 
-            MessageBox.Show("导入成功");
+            MessageBox.Show("导入成功"); 
+            this.ListView1.ItemsSource = null;
         }
     }
 

@@ -27,7 +27,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Content="确定" Width="100" Click="Button_Click"/>
+            <Button Content="查找数据" Width="100" Click="Button_Click"/>
         </StackPanel>
         <Grid Grid.Row="2">
             <ListView Name="ListView1" >

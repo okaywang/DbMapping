@@ -23,20 +23,19 @@ namespace DbMapping
     public partial class Mapping : Window
     {
         public Mapping()
+            : this(new MappingViewModel
+            {
+                SourceIndendityFieldName = "ID",
+                ImportingMaxCount = 20,
+                MappingEntries = new ObservableCollection<MappingEntry>()
+            })
+        {
+        }
+
+        public Mapping(MappingViewModel model)
         {
             InitializeComponent();
-
-            var vm = new MappingViewModel();
-            //vm.SourceFileName = "c:\\text.mdb";
-            //vm.SourceTableName = "table1";
-            vm.SourceIndendityFieldName = "ID";
-            //vm.TargetDbName = "Database1";
-            //vm.TargetTableName = "tableA";
-            vm.MappingEntries = new ObservableCollection<MappingEntry>();
-            //vm.MappingEntries.Add(new MappingEntry { SourceField = "A1", TargetField = "A2" });
-            //vm.MappingEntries.Add(new MappingEntry { SourceField = "B1", TargetField = "B2" });
-            //vm.MappingEntries.Add(new MappingEntry { SourceField = "C1", TargetField = "C2" });
-            this.DataContext = vm;
+            this.DataContext = model;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,38 +49,40 @@ namespace DbMapping
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //var dialog = new OpenFileDialog();
-            //if (dialog.ShowDialog() == true)
-            //{
-            //    var vm = this.DataContext as MappingViewModel;
-            //    vm.SourceFileName = dialog.FileName;
-            //    this.tbkSourceFileName.Text = dialog.FileName;
-            //}
+            var dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                var vm = this.DataContext as MappingViewModel;
+                vm.SourceFileName = dialog.FileName;
+            }
         }
     }
 
     public class MappingViewModel : DependencyObject
     {
-        public static readonly DependencyProperty MappingNameProperty = DependencyProperty.Register("MappingName", typeof(string), typeof(Mapping));
-        public static readonly DependencyProperty ImportingMaxCountProperty = DependencyProperty.Register("ImportingMaxCount", typeof(string), typeof(Mapping));
-        public static readonly DependencyProperty SourceFileNameProperty = DependencyProperty.Register("SourceFileName", typeof(string), typeof(Mapping));
-        public static readonly DependencyProperty SourceTableNameProperty = DependencyProperty.Register("SourceTableName", typeof(string), typeof(Mapping));
-        public static readonly DependencyProperty SourceIndendityFieldNameProperty = DependencyProperty.Register("SourceIndendityFieldName", typeof(string), typeof(Mapping));
+        public static readonly DependencyProperty MappingNameProperty = DependencyProperty.Register("MappingName", typeof(string), typeof(MappingViewModel));
+        public static readonly DependencyProperty ImportingMaxCountProperty = DependencyProperty.Register("ImportingMaxCount", typeof(int), typeof(MappingViewModel));
+        public static readonly DependencyProperty SourceFileNameProperty = DependencyProperty.Register("SourceFileName", typeof(string), typeof(MappingViewModel));
+        public static readonly DependencyProperty SourceTableNameProperty = DependencyProperty.Register("SourceTableName", typeof(string), typeof(MappingViewModel));
+        public static readonly DependencyProperty SourceIndendityFieldNameProperty = DependencyProperty.Register("SourceIndendityFieldName", typeof(string), typeof(MappingViewModel));
 
-        public static readonly DependencyProperty TargetDbNameProperty = DependencyProperty.Register("TargetDbName", typeof(string), typeof(Mapping));
-        public static readonly DependencyProperty TargetTableNameProperty = DependencyProperty.Register("TargetTableName", typeof(string), typeof(Mapping));
+        public static readonly DependencyProperty TargetDbNameProperty = DependencyProperty.Register("TargetDbName", typeof(string), typeof(MappingViewModel));
+        public static readonly DependencyProperty TargetTableNameProperty = DependencyProperty.Register("TargetTableName", typeof(string), typeof(MappingViewModel));
 
         //public static readonly DependencyProperty MappingEntriesProperty = DependencyProperty.Register("MappingEntries", typeof(string), typeof(Mapping));
-
+        public MappingViewModel()
+        {
+            MappingEntries = new ObservableCollection<MappingEntry>();
+        }
         public string MappingName
         {
             get { return this.GetValue(MappingNameProperty) as string; }
             set { this.SetValue(MappingNameProperty, value); }
         }
 
-        public string ImportingMaxCount
+        public int ImportingMaxCount
         {
-            get { return this.GetValue(ImportingMaxCountProperty) as string; }
+            get { return (int)this.GetValue(ImportingMaxCountProperty); }
             set { this.SetValue(ImportingMaxCountProperty, value); }
         }
 
@@ -139,16 +140,14 @@ namespace DbMapping
         }
 
         private void Save(object parameter)
-        {
-            var connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=../../Data/Mapping.accdb";
-
+        {  
             var sourceFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.SourceField : x + "," + y.SourceField);
             var targetFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.TargetField : x + "," + y.TargetField);
 
             var sql = string.Format(@"insert into Mapping(MappingName,ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
                             values('{0}',{1},'{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
                        this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
-            using (var cnn = new OleDbConnection(connectionString))
+            using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
             {
                 using (var cmd = new OleDbCommand(sql, cnn))
                 {
