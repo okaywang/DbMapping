@@ -74,6 +74,9 @@ namespace DbMapping
         {
             MappingEntries = new ObservableCollection<MappingEntry>();
         }
+
+        public int ID { get; set; }
+
         public string MappingName
         {
             get { return this.GetValue(MappingNameProperty) as string; }
@@ -140,13 +143,32 @@ namespace DbMapping
         }
 
         private void Save(object parameter)
-        {  
+        {
             var sourceFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.SourceField : x + "," + y.SourceField);
             var targetFields = this.MappingEntries.Aggregate<MappingEntry, string>(string.Empty, (x, y) => string.IsNullOrEmpty(x) ? y.TargetField : x + "," + y.TargetField);
 
-            var sql = string.Format(@"insert into Mapping(MappingName,ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
+            string sql = string.Empty;
+            if (this.ID == 0)
+            {
+                sql = string.Format(@"insert into Mapping(MappingName,ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
                             values('{0}',{1},'{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
                        this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
+            }
+            else
+            {
+                sql = string.Format(@"update Mapping 
+                                        set MappingName='{0}',
+                                            ImportingMaxCount={1},
+                                            SourceFileName='{2}',
+                                            SourceTableName='{3}',
+                                            SourceIndendityFieldName='{4}',
+                                            TargetDbName='{5}',
+                                            TargetTableName='{6}',
+                                            SourceFields='{7}',
+                                            TargetFields='{8}'
+                                    where ID={9}",
+                       this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields, this.ID);
+            }
             using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
             {
                 using (var cmd = new OleDbCommand(sql, cnn))

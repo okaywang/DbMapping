@@ -36,6 +36,7 @@ namespace DbMapping
             var entity = ((ListViewItem)sender).Content as MappingEntity;
             var vm = new MappingViewModel
             {
+                ID = entity.ID,
                 MappingName = entity.MappingName,
                 SourceFileName = entity.SourceFileName,
                 SourceTableName = entity.SourceTableName,
@@ -49,9 +50,10 @@ namespace DbMapping
             for (int i = 0; i < srcFields.Length; i++)
             {
                 vm.MappingEntries.Add(new MappingEntry { SourceField = srcFields[i], TargetField = tgtFields[i] });
-            }            
+            }
             var view = new Mapping(vm);
             view.ShowDialog();
+            this.DataContext = AccessHelper.GetMappings();
         }
     }
 }
