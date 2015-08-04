@@ -41,35 +41,95 @@ namespace DbMapping
             new MappingList().ShowDialog();
         }
 
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var vm = this.DataContext as ImportingViewModel;
+        //    var entity = this.ComboBox1.SelectedValue as MappingEntity;
+
+        //    var record = AccessHelper.GetMapping(entity.ID);
+        //    var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", entity.ImportingMaxCount, entity.SourceFields, entity.SourceTableName, entity.SourceIndendityFieldName, record.ImportedMaxIndendity);
+
+        //    var gridView = new GridView();
+        //    var fields = entity.SourceFields.Split(',');
+        //    for (int i = 0; i < fields.Length; i++)
+        //    {
+        //        gridView.Columns.Add(new GridViewColumn
+        //        {
+        //            Header = fields[i],
+        //            DisplayMemberBinding = new Binding(fields[i])
+        //        });
+        //    }
+
+        //    this.ListView1.View = gridView;
+
+        //    var data = AccessHelper.GetDataTable(sql, entity.SourceFileName);
+
+        //    if (data.Rows.Count > 0)
+        //    {
+        //        _maxId = Convert.ToInt32(data.Rows[data.Rows.Count - 1][entity.SourceIndendityFieldName]);
+        //    }
+        //    this.ListView1.ItemsSource = data.DefaultView;
+        //    this.tbTip.Text = string.Format("已导入标识:{0}", record.ImportedMaxIndendity);
+        //}
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var vm = this.DataContext as ImportingViewModel;
             var entity = this.ComboBox1.SelectedValue as MappingEntity;
 
             var record = AccessHelper.GetMapping(entity.ID);
-            var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", entity.ImportingMaxCount, entity.SourceFields, entity.SourceTableName, entity.SourceIndendityFieldName, record.ImportedMaxIndendity);
+            var srcFields = entity.SourceFields.Split(',');
+            var tgtFields = entity.TargetFields.Split(',');
+            var selectFields = new StringBuilder();
+            var importingFields = new List<string>();
+            for (int i = 0; i < srcFields.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(srcFields[i]))
+                {
+                    selectFields.AppendFormat("{0} as {1},", srcFields[i], tgtFields[i]);
+                    importingFields.Add(tgtFields[i]);
+                }
+            }
 
+            var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", entity.ImportingMaxCount, selectFields.ToString().TrimEnd(','), entity.SourceTableName, entity.SourceIndendityFieldName, record.ImportedMaxIndendity);
+
+            var data = AccessHelper.GetDataTable(sql, entity.SourceFileName);
+
+            var models = new List<TargetModel.GongFenModel>();
+            foreach (DataRow row in data.Rows)
+            {
+                var model = new TargetModel.GongFenModel();
+                var modelType = typeof(TargetModel.GongFenModel);
+                var modelProps = modelType.GetProperties();
+                foreach (var field in importingFields)
+                {
+                    var prop = modelProps.Single(i => i.Name == field);
+                    prop.SetValue(model, row[field]);
+                }
+                models.Add(model);
+            }
+
+
+
+            DisplayModel(models);
+        }
+
+        private void DisplayModel(List<TargetModel.GongFenModel> models)
+        {
             var gridView = new GridView();
-            var fields = entity.SourceFields.Split(',');
-            for (int i = 0; i < fields.Length; i++)
+            var props = typeof(TargetModel.GongFenModel).GetProperties();
+            foreach (var prop in props)
             {
                 gridView.Columns.Add(new GridViewColumn
                 {
-                    Header = fields[i],
-                    DisplayMemberBinding = new Binding(fields[i])
+                    Header = prop.Name,
+                    DisplayMemberBinding = new Binding(prop.Name)
                 });
             }
 
             this.ListView1.View = gridView;
 
-            var data = AccessHelper.GetDataTable(sql, entity.SourceFileName);
-
-            if (data.Rows.Count > 0)
-            {
-                _maxId = Convert.ToInt32(data.Rows[data.Rows.Count - 1][entity.SourceIndendityFieldName]);
-            }
-            this.ListView1.ItemsSource = data.DefaultView;
-            this.tbTip.Text = string.Format("已导入标识:{0}", record.ImportedMaxIndendity);
+            this.ListView1.ItemsSource = models;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

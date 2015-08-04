@@ -23,13 +23,21 @@ namespace DbMapping
     public partial class Mapping : Window
     {
         public Mapping()
-            : this(new MappingViewModel
+        {
+
+            InitializeComponent();
+            var vm = new MappingViewModel
             {
                 SourceIndendityFieldName = "ID",
                 ImportingMaxCount = 20,
                 MappingEntries = new ObservableCollection<MappingEntry>()
-            })
-        {
+            };
+            var props = typeof(TargetModel.GongFenModel).GetProperties();
+            foreach (var prop in props)
+            {
+                vm.MappingEntries.Add(new MappingEntry { TargetField = prop.Name });
+            }
+            this.DataContext = vm;
         }
 
         public Mapping(MappingViewModel model)
@@ -38,14 +46,14 @@ namespace DbMapping
             this.DataContext = model;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = this.DataContext as MappingViewModel;
-            vm.MappingEntries.Add(new MappingEntry(this.SourceField.Text, this.TargetField.Text));
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var vm = this.DataContext as MappingViewModel;
+        //    vm.MappingEntries.Add(new MappingEntry(this.SourceField.Text, this.TargetField.Text));
 
-            this.SourceField.Clear();
-            this.TargetField.Clear();
-        }
+        //    this.SourceField.Clear();
+        //    this.TargetField.Clear();
+        //}
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {

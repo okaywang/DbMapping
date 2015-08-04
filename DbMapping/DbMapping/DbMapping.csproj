@@ -130,7 +130,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TargetModel\TargetModel.csproj">
+      <Project>{1161957a-4efc-467b-a3cc-9485846bec8c}</Project>
+      <Name>TargetModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Data1\Mapping.accdb" />
     <Content Include="Data1\TestDb.accdb" />
