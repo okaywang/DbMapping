@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DbMapping.Entities;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace DbMapping
 {
@@ -108,9 +109,6 @@ namespace DbMapping
                 }
                 models.Add(model);
             }
-
-
-
             DisplayModel(models);
         }
 
@@ -139,8 +137,16 @@ namespace DbMapping
             AccessHelper.ExecuteSql(sql, AppConsts.AppConnectionString);
 
             MessageBox.Show("导入成功");
+            var model = this.ListView1.ItemsSource as List<TargetModel.GongFenModel>;
+
+            var jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var json = JsonConvert.SerializeObject(model, jSetting);
+
             this.ListView1.ItemsSource = null;
+
+
             this.tbTip.Text = string.Format("已导入标识:{0}", _maxId);
+            MessageBox.Show(json);
         }
     }
 
