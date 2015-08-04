@@ -69,16 +69,18 @@ namespace DbMapping
                 _maxId = Convert.ToInt32(data.Rows[data.Rows.Count - 1][entity.SourceIndendityFieldName]);
             }
             this.ListView1.ItemsSource = data.DefaultView;
+            this.tbTip.Text = string.Format("已导入标识:{0}", record.ImportedMaxIndendity);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var entity = this.ComboBox1.SelectedValue as MappingEntity;
             var sql = string.Format("update Mapping set ImportedMaxIndendity={0} where ID={1}", _maxId, entity.ID);
-            AccessHelper.ExecuteSql(sql, "Data/Mapping.accdb");
+            AccessHelper.ExecuteSql(sql, AppConsts.AppConnectionString);
 
-            MessageBox.Show("导入成功"); 
+            MessageBox.Show("导入成功");
             this.ListView1.ItemsSource = null;
+            this.tbTip.Text = string.Format("已导入标识:{0}", _maxId);
         }
     }
 

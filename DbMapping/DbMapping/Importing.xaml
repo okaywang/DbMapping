@@ -15,7 +15,7 @@
                 <MenuItem Header="策略列表" Click="MenuItem_Click_1"  />
             </MenuItem>
         </Menu>
-        
+
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Label Content="选择导入策略:"  Width="100"/>
             <ComboBox Name="ComboBox1" ItemsSource="{Binding Mappings}" HorizontalAlignment="Left" Width="150" >
@@ -30,8 +30,11 @@
             <Button Content="查找数据" Width="100" Click="Button_Click"/>
         </StackPanel>
         <Grid Grid.Row="2">
-            <ListView Name="ListView1" >
-            </ListView>            
+            <StackPanel>
+                <ListView Name="ListView1" MinHeight="100" >
+                </ListView>
+                <TextBlock Name="tbTip"></TextBlock>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="3">
             <Button Content="导入到目标库" Width="100" Height="30" HorizontalAlignment="Right" Click="Button_Click_1"/>
