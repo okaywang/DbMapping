@@ -94,7 +94,7 @@
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="库名"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="库名1"/>
                 <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding TargetDbName}" />
                 <Label Grid.Row="1" Grid.Column="0" Content="表名" />
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TargetTableName}" />
