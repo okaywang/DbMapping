@@ -18,14 +18,10 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Label Content="选择规则:"  Width="60"/>
-            <ComboBox Name="ComboBox1" ItemsSource="{Binding Mappings}" HorizontalAlignment="Left" Width="150" >
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding MappingName}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
+            <ComboBox Name="ComboBox1" Width="150">
+                <ComboBoxItem Tag="1">工分表</ComboBoxItem>
+                <ComboBoxItem Tag="2">硫分表</ComboBoxItem>
+                <ComboBoxItem Tag="3">量热表</ComboBoxItem>
             </ComboBox>
             <Button Content="查找数据" Width="100" Click="Button_Click"/>
         </StackPanel>

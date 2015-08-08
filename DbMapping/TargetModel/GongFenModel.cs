@@ -38,52 +38,52 @@ namespace TargetModel
         /// <summary>			
         /// 内水煤样质量 NSMYZL NSMYZL NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal NSMYZL { get; set; }
+        public decimal? NSMYZL { get; set; }
 
         /// <summary>			
         /// 内水检验结果Mad NSJYJG_MAD NSJYJG_MAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal NSJYJG_MAD { get; set; }
+        public decimal? NSJYJG_MAD { get; set; }
 
         /// <summary>			
         /// 灰分煤样质量 HFYYZL HFYYZL NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal HFYYZL { get; set; }
+        public decimal? HFYYZL { get; set; }
 
         /// <summary>			
         /// 灰分检验结果Aad HFJYJG_AAD HFJYJG_AAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal HFJYJG_AAD { get; set; }
+        public decimal? HFJYJG_AAD { get; set; }
 
         /// <summary>			
         /// 挥发分煤样质量 HFFMYZL HFFMYZL NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal HFFMYZL { get; set; }
+        public decimal? HFFMYZL { get; set; }
 
         /// <summary>			
         /// 挥发分检验结果Vad HFFJYJG_VAD HFFJYJG_VAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal HFFJYJG_VAD { get; set; }
+        public decimal? HFFJYJG_VAD { get; set; }
 
         /// <summary>			
         /// 干燥无灰基挥发分（Vdaf） GZWHJHFF_VDAF GZWHJHFF_VDAF NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal GZWHJHFF_VDAF { get; set; }
+        public decimal? GZWHJHFF_VDAF { get; set; }
 
         /// <summary>			
         /// 空干基固定碳含量（Fcad） KGJGDTHL_FCAD KGJGDTHL_FCAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal KGJGDTHL_FCAD { get; set; }
+        public decimal? KGJGDTHL_FCAD { get; set; }
 
         /// <summary>			
         /// 氢含量（Had） QHL_HAD QHL_HAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal QHL_HAD { get; set; }
+        public decimal? QHL_HAD { get; set; }
 
         /// <summary>			
         /// Had HAD HAD NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal HAD { get; set; }
+        public decimal? HAD { get; set; }
 
         /// <summary>			
         /// Fcad FCAD FCAD NUMBER(15,6) 浮点			
@@ -93,7 +93,7 @@ namespace TargetModel
         /// <summary>			
         /// Vdaf VDAF VDAF NUMBER(15,6) 浮点			
         /// </summary>			
-        public decimal VDAF { get; set; }
+        public decimal? VDAF { get; set; }
 
         /// <summary>			
         /// 数据类型 DATATYPE DATATYPE VARCHAR2(32) 字符			
