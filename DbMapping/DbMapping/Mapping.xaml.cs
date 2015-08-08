@@ -26,24 +26,56 @@ namespace DbMapping
         {
 
             InitializeComponent();
-            var vm = new MappingViewModel
-            {
-                SourceIndendityFieldName = "ID",
-                ImportingMaxCount = 20,
-                MappingEntries = new ObservableCollection<MappingEntry>()
-            };
-            var props = typeof(TargetModel.GongFenModel).GetProperties();
-            foreach (var prop in props)
-            {
-                vm.MappingEntries.Add(new MappingEntry { TargetField = prop.Name });
-            }
-            this.DataContext = vm;
+
+            this.cbRuleTypes.ItemsSource = AppHelper.GetRules();
+            this.cbRuleTypes.DisplayMemberPath = "Name";
+            this.cbRuleTypes.SelectedValuePath = "Value";
+
+            this.cbRuleTypes.SelectedValue = TargetModel.TargetTableType.工分表;
+
+            //var vm = new MappingViewModel
+            //{
+            //    SourceIndendityFieldName = "ID",
+            //    ImportingMaxCount = 20,
+            //    MappingEntries = new ObservableCollection<MappingEntry>()
+            //};
+            //var props = typeof(TargetModel.GongFenModel).GetProperties();
+            //foreach (var prop in props)
+            //{
+            //    vm.MappingEntries.Add(new MappingEntry { TargetField = prop.Name });
+            //}
+            //this.DataContext = vm;
         }
 
-        public Mapping(MappingViewModel model)
+        //public Mapping(MappingViewModel model)
+        //{
+        //    InitializeComponent();
+        //    this.DataContext = model;
+        //}
+
+        private void cbRuleTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeComponent();
-            this.DataContext = model;
+            var vm = new MappingViewModel();
+            vm.TargetTableType = (TargetModel.TargetTableType)((sender as ComboBox).SelectedValue);
+            var entity = AccessHelper.GetRule(vm.TargetTableType);
+            if (entity != null)
+            {
+                vm.ID = entity.ID;
+                //vm.MappingName = entity.MappingName;
+                vm.SourceFileName = entity.SourceFileName;
+                vm.SourceTableName = entity.SourceTableName;
+                vm.SourceIndendityFieldName = entity.SourceIndendityFieldName;
+                vm.ImportingMaxCount = entity.ImportingMaxCount;
+
+                var srcFields = entity.SourceFields.Split(',');
+                var tgtFields = entity.TargetFields.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < tgtFields.Length; i++)
+                {
+                    vm.MappingEntries.Add(new MappingEntry { SourceField = srcFields[i], TargetField = tgtFields[i] });
+                }
+            }
+
+            this.DataContext = vm;
         }
 
         //private void Button_Click(object sender, RoutedEventArgs e)
@@ -64,18 +96,20 @@ namespace DbMapping
                 vm.SourceFileName = dialog.FileName;
             }
         }
+
     }
 
     public class MappingViewModel : DependencyObject
     {
-        public static readonly DependencyProperty MappingNameProperty = DependencyProperty.Register("MappingName", typeof(string), typeof(MappingViewModel));
+        //public static readonly DependencyProperty MappingNameProperty = DependencyProperty.Register("MappingName", typeof(string), typeof(MappingViewModel));
         public static readonly DependencyProperty ImportingMaxCountProperty = DependencyProperty.Register("ImportingMaxCount", typeof(int), typeof(MappingViewModel));
         public static readonly DependencyProperty SourceFileNameProperty = DependencyProperty.Register("SourceFileName", typeof(string), typeof(MappingViewModel));
         public static readonly DependencyProperty SourceTableNameProperty = DependencyProperty.Register("SourceTableName", typeof(string), typeof(MappingViewModel));
         public static readonly DependencyProperty SourceIndendityFieldNameProperty = DependencyProperty.Register("SourceIndendityFieldName", typeof(string), typeof(MappingViewModel));
 
-        public static readonly DependencyProperty TargetDbNameProperty = DependencyProperty.Register("TargetDbName", typeof(string), typeof(MappingViewModel));
-        public static readonly DependencyProperty TargetTableNameProperty = DependencyProperty.Register("TargetTableName", typeof(string), typeof(MappingViewModel));
+        //public static readonly DependencyProperty TargetDbNameProperty = DependencyProperty.Register("TargetDbName", typeof(string), typeof(MappingViewModel));
+        //public static readonly DependencyProperty TargetTableNameProperty = DependencyProperty.Register("TargetTableName", typeof(string), typeof(MappingViewModel));
+        public static readonly DependencyProperty TargetTableTypeProperty = DependencyProperty.Register("TargetTableType", typeof(TargetModel.TargetTableType), typeof(MappingViewModel));
 
         //public static readonly DependencyProperty MappingEntriesProperty = DependencyProperty.Register("MappingEntries", typeof(string), typeof(Mapping));
         public MappingViewModel()
@@ -85,11 +119,11 @@ namespace DbMapping
 
         public int ID { get; set; }
 
-        public string MappingName
-        {
-            get { return this.GetValue(MappingNameProperty) as string; }
-            set { this.SetValue(MappingNameProperty, value); }
-        }
+        //public string MappingName
+        //{
+        //    get { return this.GetValue(MappingNameProperty) as string; }
+        //    set { this.SetValue(MappingNameProperty, value); }
+        //}
 
         public int ImportingMaxCount
         {
@@ -114,17 +148,24 @@ namespace DbMapping
             get { return this.GetValue(SourceIndendityFieldNameProperty) as string; }
             set { this.SetValue(SourceIndendityFieldNameProperty, value); }
         }
-        public string TargetDbName
+
+        public TargetModel.TargetTableType TargetTableType
         {
-            get { return this.GetValue(TargetDbNameProperty) as string; }
-            set { this.SetValue(TargetDbNameProperty, value); }
+            get { return (TargetModel.TargetTableType)this.GetValue(TargetTableTypeProperty); }
+            set { this.SetValue(TargetTableTypeProperty, value); }
         }
 
-        public string TargetTableName
-        {
-            get { return this.GetValue(TargetTableNameProperty) as string; }
-            set { this.SetValue(TargetTableNameProperty, value); }
-        }
+        //public string TargetDbName
+        //{
+        //    get { return this.GetValue(TargetDbNameProperty) as string; }
+        //    set { this.SetValue(TargetDbNameProperty, value); }
+        //}
+
+        //public string TargetTableName
+        //{
+        //    get { return this.GetValue(TargetTableNameProperty) as string; }
+        //    set { this.SetValue(TargetTableNameProperty, value); }
+        //}
 
         //public ObservableCollection<MappingEntry> MappingEntries3
         //{
@@ -158,24 +199,23 @@ namespace DbMapping
             string sql = string.Empty;
             if (this.ID == 0)
             {
-                sql = string.Format(@"insert into Mapping(MappingName,ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetDbName,TargetTableName,SourceFields,TargetFields)
-                            values('{0}',{1},'{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
-                       this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields);
+                sql = string.Format(@"insert into Mapping(ImportingMaxCount,SourceFileName,SourceTableName,SourceIndendityFieldName,TargetTableType,SourceFields,TargetFields)
+                            values('{0}',{1},'{2}','{3}','{4}','{5}','{6}')",
+                       this.ImportingMaxCount, this.SourceFileName, this.SourceTableName,
+                       this.SourceIndendityFieldName, (int)this.TargetTableType, sourceFields, targetFields);
             }
             else
             {
                 sql = string.Format(@"update Mapping 
-                                        set MappingName='{0}',
-                                            ImportingMaxCount={1},
-                                            SourceFileName='{2}',
-                                            SourceTableName='{3}',
-                                            SourceIndendityFieldName='{4}',
-                                            TargetDbName='{5}',
-                                            TargetTableName='{6}',
-                                            SourceFields='{7}',
-                                            TargetFields='{8}'
-                                    where ID={9}",
-                       this.MappingName, this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, this.TargetDbName, this.TargetTableName, sourceFields, targetFields, this.ID);
+                                        set ImportingMaxCount={0},
+                                            SourceFileName='{1}',
+                                            SourceTableName='{2}',
+                                            SourceIndendityFieldName='{3}',
+                                            TargetTableType='{4}',
+                                            SourceFields='{5}',
+                                            TargetFields='{6}'
+                                    where ID={7}",
+                       this.ImportingMaxCount, this.SourceFileName, this.SourceTableName, this.SourceIndendityFieldName, (int)this.TargetTableType, sourceFields, targetFields, this.ID);
             }
             using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
             {

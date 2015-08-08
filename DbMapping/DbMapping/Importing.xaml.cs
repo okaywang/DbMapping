@@ -28,7 +28,7 @@ namespace DbMapping
             InitializeComponent();
 
             var vm = new ImportingViewModel();
-            vm.Mappings = AccessHelper.GetMappings();
+            vm.Mappings = AccessHelper.GetRules();
             this.DataContext = vm;
         }
 
@@ -78,7 +78,7 @@ namespace DbMapping
             var vm = this.DataContext as ImportingViewModel;
             var entity = this.ComboBox1.SelectedValue as MappingEntity;
 
-            var record = AccessHelper.GetMapping(entity.ID);
+            var record = AccessHelper.GetRule(entity.ID);
             var srcFields = entity.SourceFields.Split(',');
             var tgtFields = entity.TargetFields.Split(',');
             var selectFields = new StringBuilder();

@@ -18,9 +18,10 @@ namespace DbMapping.Entities
 
         public string SourceIndendityFieldName { get; set; }
 
-        public string TargetDbName { get; set; }
+        //public string TargetDbName { get; set; }
 
-        public string TargetTableName { get; set; }
+        //public string TargetTableName { get; set; }
+        public TargetModel.TargetTableType TargetTableType { get; set; }
 
         public string SourceFields { get; set; }
 

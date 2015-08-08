@@ -10,14 +10,14 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Menu >
-            <MenuItem Header="导出策略">
-                <MenuItem Header="新建策略" Click="MenuItem_Click" />
-                <MenuItem Header="策略列表" Click="MenuItem_Click_1"  />
+            <MenuItem Header="导出规则">
+                <MenuItem Header="编辑规则" Click="MenuItem_Click" />
+                <MenuItem Header="规则列表" Click="MenuItem_Click_1"  />
             </MenuItem>
         </Menu>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Content="选择导入策略:"  Width="100"/>
+            <Label Content="选择规则:"  Width="60"/>
             <ComboBox Name="ComboBox1" ItemsSource="{Binding Mappings}" HorizontalAlignment="Left" Width="150" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

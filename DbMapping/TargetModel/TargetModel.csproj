@@ -42,6 +42,8 @@
     <Compile Include="GongFenModel.cs" />
     <Compile Include="ITargetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestModel.cs" />
+    <Compile Include="TargetTableType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

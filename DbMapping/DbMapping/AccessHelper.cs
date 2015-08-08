@@ -31,12 +31,10 @@ namespace DbMapping
 
         public static T[] GetList<T>(string sql, string accessFileName) where T : class
         {
-
-
             return null;
         }
 
-        public static MappingEntity[] GetMappings()
+        public static MappingEntity[] GetRules()
         {
             var sql = "select * from Mapping";
             var entities = new List<MappingEntity>();
@@ -55,8 +53,7 @@ namespace DbMapping
                         entity.SourceIndendityFieldName = reader["SourceIndendityFieldName"].ToString();
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
-                        entity.TargetDbName = reader["TargetDbName"].ToString();
-                        entity.TargetTableName = reader["TargetTableName"].ToString();
+                        entity.TargetTableType = (TargetModel.TargetTableType)reader["TargetTableType"];
                         entity.SourceFields = reader["SourceFields"].ToString();
                         entity.TargetFields = reader["TargetFields"].ToString();
                         entity.ImportedMaxIndendity = (int)reader["ImportedMaxIndendity"];
@@ -66,10 +63,19 @@ namespace DbMapping
             }
             return entities.ToArray();
         }
-        public static MappingEntity GetMapping(int id)
-        { 
+        public static MappingEntity GetRule(int id)
+        {
             var sql = string.Format("select * from Mapping where ID={0}", id);
+            return GetRuleBySql(sql);
+        }
+        public static MappingEntity GetRule(TargetModel.TargetTableType table)
+        {
+            var sql = string.Format("select * from Mapping where TargetTableType={0}", (int)table);
+            return GetRuleBySql(sql);
+        }
 
+        private static MappingEntity GetRuleBySql(string sql)
+        {
             using (var cnn = new OleDbConnection(AppConsts.AppConnectionString))
             {
                 cnn.Open();
@@ -85,16 +91,17 @@ namespace DbMapping
                         entity.SourceIndendityFieldName = reader["SourceIndendityFieldName"].ToString();
                         entity.SourceFileName = reader["SourceFileName"].ToString();
                         entity.SourceTableName = reader["SourceTableName"].ToString();
-                        entity.TargetTableName = reader["TargetTableName"].ToString();
+                        entity.TargetTableType = (TargetModel.TargetTableType)reader["TargetTableType"];
                         entity.SourceFields = reader["SourceFields"].ToString();
                         entity.TargetFields = reader["TargetFields"].ToString();
                         entity.ImportedMaxIndendity = (int)reader["ImportedMaxIndendity"];
                         return entity;
                     }
+                    return null;
                 }
             }
-            return null;
         }
+
         public static DataTable GetDataTable(string sql, string fileName)
         {
             var connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}", fileName);

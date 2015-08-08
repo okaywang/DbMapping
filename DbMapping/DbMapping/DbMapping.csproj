@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppConsts.cs" />
+    <Compile Include="AppHelper.cs" />
     <Compile Include="Entities\MappingEntity.cs" />
     <Compile Include="Importing.xaml.cs">
       <DependentUpon>Importing.xaml</DependentUpon>
@@ -70,6 +71,7 @@
     <Compile Include="MappingList.xaml.cs">
       <DependentUpon>MappingList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NameValuePair.cs" />
     <Compile Include="Target.xaml.cs">
       <DependentUpon>Target.xaml</DependentUpon>
     </Compile>
