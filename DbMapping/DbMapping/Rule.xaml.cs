@@ -90,10 +90,18 @@ namespace DbMapping
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            if (dialog.ShowDialog() == true)
+            try
+            {
+                dialog.ShowDialog();
+            }
+            catch (Exception)
+            {
+            }
+
+            if (!string.IsNullOrEmpty(dialog.FileName))
             {
                 var vm = this.DataContext as MappingViewModel;
-                vm.SourceFileName = dialog.FileName;
+                vm.SourceFileName = this.txtFileName.Text = dialog.FileName;
             }
         }
 

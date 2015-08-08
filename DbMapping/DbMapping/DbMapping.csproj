@@ -65,8 +65,8 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Mapping.xaml.cs">
-      <DependentUpon>Mapping.xaml</DependentUpon>
+    <Compile Include="Rule.xaml.cs">
+      <DependentUpon>Rule.xaml</DependentUpon>
     </Compile>
     <Compile Include="MappingList.xaml.cs">
       <DependentUpon>MappingList.xaml</DependentUpon>
@@ -91,7 +91,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Mapping.xaml">
+    <Page Include="Rule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
