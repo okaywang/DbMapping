@@ -23,7 +23,7 @@ namespace TargetModel
         /// <summary>			
         /// 化验时间 HYSJ HYSJ DATE 日期时间			
         /// </summary>			
-        public DateTime HYSJ { get; set; }
+        public DateTime? HYSJ { get; set; }
 
         /// <summary>			
         /// 化验员 HYY HYY VARCHAR2(32) 字符			
@@ -103,7 +103,7 @@ namespace TargetModel
         /// <summary>			
         /// 是否平均 IFAVG IFAVG boolean bool			
         /// </summary>			
-        public bool IFAVG { get; set; }
+        public bool? IFAVG { get; set; }
 
         /// <summary>			
         /// 上传时间 SCSJ SCSJ DATE 日期时间			

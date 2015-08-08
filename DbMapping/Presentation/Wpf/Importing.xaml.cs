@@ -135,16 +135,21 @@ namespace DbMapping
 
             MessageBox.Show("导入成功");
             var model = this.ListView1.ItemsSource as List<TargetModel.GongFenModel>;
-
+            Export(model);
             this.ListView1.ItemsSource = null;
 
             var reqModel = new RequestModel<object>();
             reqModel.TableType = _rule.TargetTableType;
             reqModel.Model = model;
 
+        }
+
+        private void Export(List<TargetModel.GongFenModel> models)
+        {
             var jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-            var json = JsonConvert.SerializeObject(model, jSetting);
-            MessageBox.Show(json);
+            var json = JsonConvert.SerializeObject(models, jSetting);
+
+            var result = MyHttpHelper.Post<HttpResultModel>("http://localhost:1793/api/importing/GongFen", json);
         }
     }
 

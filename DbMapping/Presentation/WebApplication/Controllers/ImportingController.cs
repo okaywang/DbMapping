@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Text;
+using TargetModel;
 
 namespace WebApplication.Controllers
 {
@@ -14,6 +15,16 @@ namespace WebApplication.Controllers
         public string TestGet()
         {
             return "hello,Get," + DateTime.Now.ToString();
+        }
+
+        [HttpGet]
+        public HttpResultModel TestObject()
+        {
+            var result = new HttpResultModel();
+            result.Status = 0;
+            result.Message = "success";
+
+            return result;
         }
 
         [HttpPost]
