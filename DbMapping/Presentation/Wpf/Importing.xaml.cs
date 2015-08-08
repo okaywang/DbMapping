@@ -143,7 +143,7 @@ namespace DbMapping
             reqModel.Model = model;
 
             var jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-            var json = JsonConvert.SerializeObject(reqModel, jSetting);
+            var json = JsonConvert.SerializeObject(model, jSetting);
             MessageBox.Show(json);
         }
     }

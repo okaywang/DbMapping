@@ -10,6 +10,19 @@ namespace WebApplication.Controllers
 {
     public class ImportingController : ApiController
     {
+        [HttpGet]
+        public string TestGet()
+        {
+            return "hello,Get," + DateTime.Now.ToString();
+        }
+
+        [HttpPost]
+        public string TestPost()
+        {
+            return "hello,Post," + DateTime.Now.ToString();
+        }
+
+        [HttpPost]
         public string GongFen(TargetModel.GongFenModel[] models)
         {
             var props = typeof(TargetModel.GongFenModel).GetProperties();
@@ -32,7 +45,16 @@ namespace WebApplication.Controllers
                 var values = new StringBuilder();
                 foreach (var prop in props)
                 {
-                    values.AppendFormat("'{0}'", prop.GetValue(item));
+                    var v = prop.GetValue(item);
+                    if (v == null)
+                    {
+                        values.AppendFormat("NULL");
+                    }
+                    else
+                    {
+                        values.AppendFormat("'{0}'", v);
+                    }
+
                     values.Append(",");
                 }
                 sb.Append(values.ToString().TrimEnd(','));

@@ -65,6 +65,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyHttpHelper.cs" />
     <Compile Include="Rule.xaml.cs">
       <DependentUpon>Rule.xaml</DependentUpon>
     </Compile>
