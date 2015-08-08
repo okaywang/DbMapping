@@ -1,0 +1,32 @@
+﻿<Window x:Class="DbMapping.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="800" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu >
+            <MenuItem Header="导出策略">
+                <MenuItem Header="新建策略" Click="MenuItem_Click" />
+                <MenuItem Header="策略列表" Click="MenuItem_Click_1"  />
+            </MenuItem>
+            <MenuItem Header="_File">
+                <MenuItem Header="_New..." />
+                <MenuItem Header="_Open..." />
+                <Separator />
+                <MenuItem Header="Sen_d To">
+                    <MenuItem Header="Mail Recipient" />
+                    <MenuItem Header="My Documents" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+            </MenuItem>
+
+            <MenuItem Header="_View">
+            </MenuItem>
+        </Menu>
+        
+    </Grid>
+</Window>

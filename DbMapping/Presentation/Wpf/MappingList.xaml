@@ -1,0 +1,26 @@
+﻿<Window x:Class="DbMapping.MappingList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MappingList" Height="500" Width="550" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <ListView ItemsSource="{Binding}" ItemContainerStyle="{StaticResource itemstyle}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding MappingName}" Header="策略名称" Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding SourceTableName}" Header="源表"  Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding TargetTableName}" Header="目标表"  Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding ImportedMaxIndendity}" Header="导入标识值"  Width="100" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
