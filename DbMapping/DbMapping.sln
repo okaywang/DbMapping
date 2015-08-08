@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "Presentation\WebApplication\WebApplication.csproj", "{31124F79-1F63-451C-8832-15117B49B2A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbMapping", "Presentation\Wpf\DbMapping.csproj", "{4256C75D-54F3-45F5-BD5F-C28B0BA3487D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopApplication", "Presentation\Wpf\DesktopApplication.csproj", "{4256C75D-54F3-45F5-BD5F-C28B0BA3487D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BussinessLogic", "BussinessLogic", "{5A2803AA-C1A1-4E5A-AB4D-F7911875146F}"
 EndProject
