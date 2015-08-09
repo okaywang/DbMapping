@@ -91,7 +91,7 @@ namespace DbMapping
             }
 
             //var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
-            var sql = string.Format("select top 1 {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
+            var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
 
             var data = AccessHelper.GetDataTable(sql, _rule.SourceFileName);
 
@@ -131,18 +131,12 @@ namespace DbMapping
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var sql = string.Format("update Mapping set ImportedMaxIndendity={0} where ID={1}", _maxId, _rule.ID);
-            AccessHelper.ExecuteSql(sql, AppConsts.AppConnectionString);
-
-            MessageBox.Show("导入成功");
             var model = this.ListView1.ItemsSource as List<TargetModel.GongFenModel>;
             Export(model);
+            var sql = string.Format("update Mapping set ImportedMaxIndendity={0} where ID={1}", model.Max(i => i.ID), _rule.ID);
+            AccessHelper.ExecuteSql(sql, AppConsts.AppConnectionString);
+            MessageBox.Show("导入成功");
             this.ListView1.ItemsSource = null;
-
-            var reqModel = new RequestModel<object>();
-            reqModel.TableType = _rule.TargetTableType;
-            reqModel.Model = model;
-
         }
 
         private void Export(List<TargetModel.GongFenModel> models)
@@ -151,6 +145,10 @@ namespace DbMapping
             var json = JsonConvert.SerializeObject(models, jSetting);
 
             var result = MyHttpHelper.Post<HttpResultModel>(AppConsts.ImportUrl + "GongFen", json);
+            if (result.Status != 0)
+            {
+                throw new Exception(result.Message);
+            }
         }
     }
 

@@ -15,18 +15,14 @@ namespace WebApplication.Controllers
         [HttpGet]
         public string TestGet()
         {
+            var ss = Environment.Is64BitProcess;
+
             string cnstr = @"Data Source=mas;User Id=foaapp;Password=foaapp;";
 
             using (var cn = new OracleConnection(cnstr))
             {
                 cn.Open();
             }
-
-
-
-
-
-
             return "hello,Get," + DateTime.Now.ToString();
         }
 
@@ -58,14 +54,14 @@ namespace WebApplication.Controllers
             }
 
             var sql = new StringBuilder();
-            sql.AppendFormat("insert into gongfen({0})", sb.ToString().TrimEnd(','));
-            sql.Append("values");
+            sql.AppendFormat("insert into t_gfb({0})", sb.ToString().TrimEnd(','));
+
 
 
             foreach (var item in models)
             {
                 sb.Clear();
-                sb.Append("(");
+                sql.Append("select ");
                 var values = new StringBuilder();
                 foreach (var prop in props)
                 {
@@ -82,13 +78,13 @@ namespace WebApplication.Controllers
                     values.Append(",");
                 }
                 sb.Append(values.ToString().TrimEnd(','));
-                sb.Append(")");
+                sb.Append(" from dual");
 
-                sql.Append(sb.ToString());
-                sql.Append(",");
+                sql.AppendLine(sb.ToString());
+                sql.AppendLine("union");
             }
 
-            var mysql = sql.ToString().TrimEnd(',');
+            var mysql = sql.Remove(sql.Length - 5, 5);
 
             string cnstr = @"Data Source=mas;User Id=foaapp;Password=foaapp;";
             try
@@ -96,7 +92,7 @@ namespace WebApplication.Controllers
                 using (var cn = new OracleConnection(cnstr))
                 {
                     cn.Open();
-                    using (var cm = new OracleCommand(mysql, cn))
+                    using (var cm = new OracleCommand(mysql.ToString(), cn))
                     {
                         cm.ExecuteNonQuery();
                         return new HttpResultModel() { Status = 0, Message = "success" };
