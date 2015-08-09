@@ -90,7 +90,8 @@ namespace DbMapping
                 }
             }
 
-            var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
+            //var sql = string.Format("select top {0} {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
+            var sql = string.Format("select top 1 {1} from {2} where {3} > {4}", _rule.ImportingMaxCount, selectFields.ToString().TrimEnd(','), _rule.SourceTableName, _rule.SourceIndendityFieldName, record.ImportedMaxIndendity);
 
             var data = AccessHelper.GetDataTable(sql, _rule.SourceFileName);
 
@@ -149,7 +150,7 @@ namespace DbMapping
             var jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             var json = JsonConvert.SerializeObject(models, jSetting);
 
-            var result = MyHttpHelper.Post<HttpResultModel>("http://localhost:1793/api/importing/GongFen", json);
+            var result = MyHttpHelper.Post<HttpResultModel>(AppConsts.ImportUrl + "GongFen", json);
         }
     }
 

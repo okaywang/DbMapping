@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Text;
 using TargetModel;
+using System.Data.OracleClient;
 
 namespace WebApplication.Controllers
 {
@@ -14,6 +15,18 @@ namespace WebApplication.Controllers
         [HttpGet]
         public string TestGet()
         {
+            string cnstr = @"Data Source=mas;User Id=foaapp;Password=foaapp;";
+
+            using (var cn = new OracleConnection(cnstr))
+            {
+                cn.Open();
+            }
+
+
+
+
+
+
             return "hello,Get," + DateTime.Now.ToString();
         }
 
@@ -34,7 +47,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public string GongFen(TargetModel.GongFenModel[] models)
+        public HttpResultModel GongFen(TargetModel.GongFenModel[] models)
         {
             var props = typeof(TargetModel.GongFenModel).GetProperties();
             var sb = new StringBuilder();
@@ -77,7 +90,24 @@ namespace WebApplication.Controllers
 
             var mysql = sql.ToString().TrimEnd(',');
 
-            return mysql;
+            string cnstr = @"Data Source=mas;User Id=foaapp;Password=foaapp;";
+            try
+            {
+                using (var cn = new OracleConnection(cnstr))
+                {
+                    cn.Open();
+                    using (var cm = new OracleCommand(mysql, cn))
+                    {
+                        cm.ExecuteNonQuery();
+                        return new HttpResultModel() { Status = 0, Message = "success" };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new HttpResultModel { Status = 1, Message = ex.Message };
+            }
+
         }
     }
 }
